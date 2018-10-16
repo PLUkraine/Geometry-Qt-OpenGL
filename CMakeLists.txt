@@ -16,6 +16,8 @@ find_package(Qt5 COMPONENTS Core Quick REQUIRED)
 # and organize things nicely
 set(opengl_plugin_lib_sources
     include/oglTriangle.h
+
+    src/oglTriangle.cpp
 )
 ADD_LIBRARY(OpenGlPlugin STATIC ${opengl_plugin_lib_sources})
 target_link_libraries(OpenGlPlugin PRIVATE Qt5::Core Qt5::Quick)
@@ -23,4 +25,4 @@ target_link_libraries(OpenGlPlugin PRIVATE Qt5::Core Qt5::Quick)
 # main app
 add_executable(${PROJECT_NAME} "main.cpp" "qml.qrc")
 target_compile_definitions(${PROJECT_NAME} PRIVATE $<$<OR:$<CONFIG:Debug>,$<CONFIG:RelWithDebInfo>>:QT_QML_DEBUG>)
-target_link_libraries(${PROJECT_NAME} PRIVATE Qt5::Core Qt5::Quick)
+target_link_libraries(${PROJECT_NAME} PRIVATE Qt5::Core Qt5::Quick OpenGlPlugin)

@@ -1,6 +1,22 @@
 #ifndef OGL_TRIANGLE_INCLUDED
 #define OGL_TRIANGLE_INCLUDED
 
-const float PI = 3.141592f;
+#include <QQuickItem>
+#include <QQuickWindow>
+
+class OglTriangle : public QQuickItem {
+
+public:
+    static void registerQmlType();
+    OglTriangle(QQuickItem *parent = nullptr);
+
+//public slots:
+//    void sync();
+//    void cleanup();
+
+private slots:
+    void handleWindowChanged(QQuickWindow *win);
+
+};
 
 #endif //OGL_TRIANGLE_INCLUDED 

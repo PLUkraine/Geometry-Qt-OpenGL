@@ -8,6 +8,8 @@ int main(int argc, char *argv[])
     QCoreApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
     QGuiApplication app(argc, argv);
 
+    OglTriangle::registerQmlType();
+
     QQuickView view;
     view.setTitle("Opengl Test");
     view.setResizeMode(QQuickView::SizeRootObjectToView);
