@@ -1,0 +1,6 @@
+#ifndef OGL_TRIANGLE_INCLUDED
+#define OGL_TRIANGLE_INCLUDED
+
+const float PI = 3.141592f;
+
+#endif //OGL_TRIANGLE_INCLUDED 
