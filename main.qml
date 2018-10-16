@@ -7,8 +7,15 @@ Item {
     width: 640
     height: 480
 
-    OglTriangle {
+    OglItem {
         anchors.fill: parent
         anchors.margins: 10
+
+        Rectangle {
+            anchors.fill: parent
+            color: "transparent"
+            border.color: "black"
+            border.width: 2
+        }
     }
 }

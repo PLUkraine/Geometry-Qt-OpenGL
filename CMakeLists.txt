@@ -15,9 +15,11 @@ find_package(Qt5 COMPONENTS Core Quick REQUIRED)
 # we try to avoid recompilation for tests and for application
 # and organize things nicely
 set(opengl_plugin_lib_sources
-    include/oglTriangle.h
+    include/oglItem.h
+    include/triangleRenderer.h
 
-    src/oglTriangle.cpp
+    src/oglItem.cpp
+    src/triangleRenderer.cpp
 )
 ADD_LIBRARY(OpenGlPlugin STATIC ${opengl_plugin_lib_sources})
 target_link_libraries(OpenGlPlugin PRIVATE Qt5::Core Qt5::Quick)

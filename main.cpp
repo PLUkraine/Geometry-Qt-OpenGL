@@ -1,14 +1,14 @@
 #include <QGuiApplication>
 #include <QQuickView>
 
-#include "oglTriangle.h"
+#include "oglItem.h"
 
 int main(int argc, char *argv[])
 {
     QCoreApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
     QGuiApplication app(argc, argv);
 
-    OglTriangle::registerQmlType();
+    OglItem::registerQmlType();
 
     QQuickView view;
     view.setTitle("Opengl Test");
