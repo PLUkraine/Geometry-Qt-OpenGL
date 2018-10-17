@@ -13,7 +13,7 @@ void setSurfaceFormat() {
     // Request OpenGL 3.3 compatibility or OpenGL ES 3.0.
     if (QOpenGLContext::openGLModuleType() == QOpenGLContext::LibGL) {
         fmt.setVersion(3, 3);
-        fmt.setProfile(QSurfaceFormat::CompatibilityProfile);
+        fmt.setProfile(QSurfaceFormat::CoreProfile);
     } else {
         fmt.setVersion(3, 0);
     }

@@ -2,4 +2,8 @@
     <qresource prefix="/">
         <file>main.qml</file>
     </qresource>
+    <qresource prefix="/shaders">
+        <file>frag.glsl</file>
+        <file>vert.glsl</file>
+    </qresource>
 </RCC>

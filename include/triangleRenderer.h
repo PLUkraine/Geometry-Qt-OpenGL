@@ -21,6 +21,10 @@ public:
 
 public slots:
     void paint();
+
+private:
+    void initGL();
+    void initProgram();
 };
 
 #endif //TRIANGLE_RENDERER
