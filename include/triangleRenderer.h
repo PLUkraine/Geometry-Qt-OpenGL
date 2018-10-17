@@ -4,9 +4,8 @@
 #include <memory>
 #include <QQuickWindow>
 #include <QOpenGLShaderProgram>
-#include <QOpenGLFunctions>
 
-class TriangleRenderer : public QObject, QOpenGLFunctions {
+class TriangleRenderer : public QObject {
     Q_OBJECT
 
 /* Members */
