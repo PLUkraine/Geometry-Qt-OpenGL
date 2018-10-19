@@ -4,6 +4,10 @@
 #include <memory>
 #include <QQuickWindow>
 #include <QOpenGLShaderProgram>
+#include <QOpenGLExtraFunctions>
+#include <QOpenGLVertexArrayObject>
+#include <QOpenGLDebugLogger>
+#include <QOpenGLBuffer>
 
 class TriangleRenderer : public QObject {
     Q_OBJECT
@@ -13,6 +17,10 @@ private:
     QSize m_viewportSize;
     std::unique_ptr<QOpenGLShaderProgram> m_program;
     QQuickWindow *m_window;
+
+    // TODO put in the model
+    QOpenGLVertexArrayObject m_vao;
+    QOpenGLBuffer m_vbo;
 
 public:
     TriangleRenderer();
@@ -24,7 +32,9 @@ public slots:
 
 private:
     void initGL();
-    void initProgram();
+    void initProgram(QOpenGLExtraFunctions *ogl);
+    void initVAO(QOpenGLExtraFunctions *ogl);
+    void printVersionInformation(QOpenGLExtraFunctions *ogl);
 };
 
 #endif //TRIANGLE_RENDERER

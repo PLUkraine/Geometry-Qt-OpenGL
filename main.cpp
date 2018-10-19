@@ -14,6 +14,7 @@ void setSurfaceFormat() {
     if (QOpenGLContext::openGLModuleType() == QOpenGLContext::LibGL) {
         fmt.setVersion(3, 3);
         fmt.setProfile(QSurfaceFormat::CoreProfile);
+        fmt.setOption(QSurfaceFormat::DebugContext);
     } else {
         fmt.setVersion(3, 0);
     }

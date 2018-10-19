@@ -24,6 +24,7 @@ private:
 public:
     static void registerQmlType();
     OglItem(QQuickItem *parent = nullptr);
+    Q_INVOKABLE void renderOgl();
 
 
 /* Slots */

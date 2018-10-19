@@ -2,6 +2,13 @@
 
 #include <QDebug>
 
+void OglItem::renderOgl()
+{
+    if (window()) {
+        window()->update();
+    }
+}
+
 void OglItem::registerQmlType()
 {
     qmlRegisterType<OglItem>("OpenGlPlugin", 1, 0, "OglItem");
@@ -15,7 +22,6 @@ OglItem::OglItem(QQuickItem *parent)
 
 void OglItem::sync()
 {
-    qDebug() << "Before Sync";
     if (!m_renderer) {
         qDebug() << "Create New Renderer";
         m_renderer.reset(new TriangleRenderer());
@@ -34,7 +40,6 @@ void OglItem::cleanup()
 
 void OglItem::handleWindowChanged(QQuickWindow *win)
 {
-    qDebug() << "Window Changed";
     if (win) {
         connect(win, &QQuickWindow::beforeSynchronizing, this, &OglItem::sync, Qt::DirectConnection);
         connect(win, &QQuickWindow::sceneGraphInvalidated, this, &OglItem::cleanup, Qt::DirectConnection);
