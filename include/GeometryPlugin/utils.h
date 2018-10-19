@@ -4,7 +4,7 @@
 #include <glm/glm.hpp>
 
 enum class Orientation {
-    CW, CCW, COLLINEAR
+    CW = -1, COLLINEAR = 0, CCW = 1,
 };
 
 class Point {

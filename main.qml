@@ -12,16 +12,16 @@ Item {
         anchors.fill: parent
         anchors.margins: 10
 
-//        Timer {
-//            id: updateOgl
+        Timer {
+            id: updateOgl
 
-//            interval: 1000/30
-//            running: true
-//            repeat: true
-//            onTriggered: {
-//                ogl.renderOgl();
-//            }
-//        }
+            interval: 1000/30
+            running: true
+            repeat: true
+            onTriggered: {
+                ogl.renderOgl();
+            }
+        }
 
 //        Rectangle {
 //            anchors.fill: parent

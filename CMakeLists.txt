@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.1)
 
-project(OpenglTest LANGUAGES CXX)
+project(GeometryApp LANGUAGES CXX)
 
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
 set(CMAKE_AUTOMOC ON)
@@ -9,7 +9,7 @@ set(CMAKE_CXX_STANDARD 11)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 include_directories(include)
-find_package(Qt5 COMPONENTS Core Quick REQUIRED)
+find_package(Qt5 COMPONENTS Core Quick Test REQUIRED)
 
 # create static OpenGLPlugin library
 # we try to avoid recompilation for tests and for application
@@ -39,3 +39,12 @@ target_link_libraries(GeometryPlugin PRIVATE Qt5::Core)
 add_executable(${PROJECT_NAME} "main.cpp" "qml.qrc")
 target_compile_definitions(${PROJECT_NAME} PRIVATE $<$<OR:$<CONFIG:Debug>,$<CONFIG:RelWithDebInfo>>:QT_QML_DEBUG>)
 target_link_libraries(${PROJECT_NAME} PRIVATE Qt5::Core Qt5::Quick OpenGlPlugin GeometryPlugin)
+
+# set up the testing project
+enable_testing()
+set(geometry_test_sources
+    test/GeometryTests.cpp
+)
+add_executable(GeometryTests ${geometry_test_sources})
+add_test(GeometryTests GeometryTests)
+target_link_libraries(GeometryTests PRIVATE Qt5::Test GeometryPlugin)
