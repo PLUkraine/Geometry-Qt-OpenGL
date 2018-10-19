@@ -8,6 +8,7 @@ enum class Orientation {
 };
 
 class Point {
+public:
     static Orientation getOrientation(const glm::vec2& a,
                                       const glm::vec2& b,
                                       const glm::vec2& c);

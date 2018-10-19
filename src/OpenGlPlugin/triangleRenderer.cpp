@@ -63,7 +63,6 @@ void TriangleRenderer::paint()
 {
     QOpenGLExtraFunctions *ogl = getFunctions();
 
-    qDebug() << "Paint Triangle Renderer";
     ogl->glViewport(0, 0, m_viewportSize.width(), m_viewportSize.height());
 
     ogl->glClearColor(1, 1, 1, 1);
@@ -71,10 +70,8 @@ void TriangleRenderer::paint()
 
     m_program->bind();
     ogl->glBindVertexArray(m_vao);
-    check_gl_error();
 
     ogl->glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
-    check_gl_error();
 
     ogl->glBindVertexArray(0);
     m_program->release();
@@ -99,10 +96,10 @@ void TriangleRenderer::initProgram()
 
     // add vertex shader
     m_program->addShaderFromSourceFile(QOpenGLShader::Vertex,
-                                                ":/shaders/vert.glsl");
+                                       ":/shaders/vert.glsl");
     // add fragment shader
     m_program->addShaderFromSourceFile(QOpenGLShader::Fragment,
-                                                ":/shaders/frag.glsl");
+                                       ":/shaders/frag.glsl");
     m_program->link();
 }
 
