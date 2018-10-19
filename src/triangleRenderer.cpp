@@ -35,6 +35,11 @@ TriangleRenderer::TriangleRenderer()
     initGL();
 }
 
+TriangleRenderer::~TriangleRenderer()
+{
+
+}
+
 void TriangleRenderer::setViewportSize(const QSize &size)
 {
     m_viewportSize = size;
@@ -47,7 +52,7 @@ void TriangleRenderer::setWindow(QQuickWindow *window)
 
 void TriangleRenderer::paint()
 {
-    QOpenGLExtraFunctions *ogl = QOpenGLContext::currentContext()->extraFunctions();
+    QOpenGLExtraFunctions *ogl = getFunctions();
 
     qDebug() << "Paint Triangle Renderer";
     ogl->glViewport(0, 0, m_viewportSize.width(), m_viewportSize.height());
@@ -56,26 +61,30 @@ void TriangleRenderer::paint()
     ogl->glClear(GL_COLOR_BUFFER_BIT);
 
     m_program->bind();
-    m_vao.bind();
+    ogl->glBindVertexArray(m_vao);
+    check_gl_error();
 
-    ogl->glDrawArrays(GL_POINTS, 0, 3);
+    ogl->glDrawArrays(GL_TRIANGLES, 0, 3);
+    check_gl_error();
 
-    m_vao.release();
+    ogl->glBindVertexArray(0);
     m_program->release();
 
     m_window->resetOpenGLState();
 }
 
-void TriangleRenderer::initGL()
+QOpenGLExtraFunctions *TriangleRenderer::getFunctions() const
 {
-    QOpenGLExtraFunctions *ogl = QOpenGLContext::currentContext()->extraFunctions();
-
-    printVersionInformation(ogl);
-    initProgram(ogl);
-    initVAO(ogl);
+    return QOpenGLContext::currentContext()->extraFunctions();
 }
 
-void TriangleRenderer::initProgram(QOpenGLExtraFunctions *)
+void TriangleRenderer::initGL()
+{
+    initProgram();
+    initVAO();
+}
+
+void TriangleRenderer::initProgram()
 {
     m_program.reset(new QOpenGLShaderProgram());
 
@@ -88,9 +97,9 @@ void TriangleRenderer::initProgram(QOpenGLExtraFunctions *)
     m_program->link();
 }
 
-void TriangleRenderer::initVAO(QOpenGLExtraFunctions *ogl)
+void TriangleRenderer::initVAO()
 {
-
+    auto ogl = getFunctions();
     GLfloat vertices[] = {
         -0.5f, -0.5f, 0.0f, // left
          0.5f, -0.5f, 0.0f, // right
@@ -99,20 +108,28 @@ void TriangleRenderer::initVAO(QOpenGLExtraFunctions *ogl)
 
 
     m_program->bind();
-    Q_ASSERT(m_vao.create());
-    m_vao.bind();
-
-    m_vbo.create();
-    m_vbo.bind();
-    m_vbo.setUsagePattern(QOpenGLBuffer::StaticDraw);
-    m_vbo.allocate(vertices, sizeof(vertices));
-    ogl->glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(GLfloat) * 3, (GLvoid*)0);
+    ogl->glGenVertexArrays(1, &m_vao);
     check_gl_error();
+    ogl->glGenBuffers(1, &m_vbo);
+    check_gl_error();
+    // bind the Vertex Array Object first, then bind and set vertex buffer(s), and then configure vertex attributes(s).
+    ogl->glBindVertexArray(m_vao);
+    check_gl_error();
+
+    ogl->glBindBuffer(GL_ARRAY_BUFFER, m_vbo);
+    ogl->glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
+
+    ogl->glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
     ogl->glEnableVertexAttribArray(0);
     check_gl_error();
-    m_vbo.release();
 
-    m_vao.release();
+    // note that this is allowed, the call to glVertexAttribPointer registered VBO as the vertex attribute's bound vertex buffer object so afterwards we can safely unbind
+    ogl->glBindBuffer(GL_ARRAY_BUFFER, 0);
+
+    // You can unbind the VAO afterwards so other VAO calls won't accidentally modify this VAO, but this rarely happens. Modifying other
+    // VAOs requires a call to glBindVertexArray anyways so we generally don't unbind VAOs (nor VBOs) when it's not directly necessary.
+    ogl->glBindVertexArray(0);
+
     m_program->release();
 }
 

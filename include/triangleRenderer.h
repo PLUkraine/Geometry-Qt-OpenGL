@@ -27,11 +27,12 @@ private:
     QQuickWindow *m_window;
 
     // TODO put in the model
-    QOpenGLVertexArrayObject m_vao;
-    QOpenGLBuffer m_vbo;
+    GLuint m_vao;
+    GLuint m_vbo;
 
 public:
     TriangleRenderer();
+    ~TriangleRenderer();
     void setViewportSize(const QSize &size);
     void setWindow(QQuickWindow *window);
 
@@ -39,9 +40,10 @@ public slots:
     void paint();
 
 private:
+    QOpenGLExtraFunctions *getFunctions() const;
     void initGL();
-    void initProgram(QOpenGLExtraFunctions *ogl);
-    void initVAO(QOpenGLExtraFunctions *ogl);
+    void initProgram();
+    void initVAO();
     void printVersionInformation(QOpenGLExtraFunctions *ogl);
 };
 

@@ -10,14 +10,11 @@ void setSurfaceFormat() {
     QSurfaceFormat fmt;
     fmt.setDepthBufferSize(24);
 
-    // Request OpenGL 3.3 compatibility or OpenGL ES 3.0.
-    if (QOpenGLContext::openGLModuleType() == QOpenGLContext::LibGL) {
-        fmt.setVersion(3, 3);
-        fmt.setProfile(QSurfaceFormat::CoreProfile);
-        fmt.setOption(QSurfaceFormat::DebugContext);
-    } else {
-        fmt.setVersion(3, 0);
-    }
+
+    fmt.setVersion(3, 3);
+    fmt.setProfile(QSurfaceFormat::CoreProfile);
+    fmt.setOption(QSurfaceFormat::DebugContext);
+    fmt.setSwapBehavior(QSurfaceFormat::DoubleBuffer);
 
     QSurfaceFormat::setDefaultFormat(fmt);
 }
