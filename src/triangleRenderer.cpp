@@ -37,7 +37,16 @@ TriangleRenderer::TriangleRenderer()
 
 TriangleRenderer::~TriangleRenderer()
 {
+    /*
+     * This makes apap crash!!!
+     * Do NOT getFunctions inside of the destructor.
+     * It crashed the app
+     */
+//    auto ogl = getFunctions();
 
+//    ogl->glDeleteBuffers(1, &m_posVbo);
+//    ogl->glDeleteBuffers(1, &m_colVbo);
+//    ogl->glDeleteVertexArrays(1, &m_vao);
 }
 
 void TriangleRenderer::setViewportSize(const QSize &size)
@@ -105,23 +114,31 @@ void TriangleRenderer::initVAO()
          0.5f, -0.5f, 0.0f, // right
          0.0f,  0.5f, 0.0f  // top
     };
+    GLfloat colors[] = {
+         1.0f,  0.0f, 0.0f, // left
+         0.0f,  1.0f, 0.0f, // right
+         0.0f,  0.0f, 1.0f  // top
+    };
 
 
     m_program->bind();
     ogl->glGenVertexArrays(1, &m_vao);
-    check_gl_error();
-    ogl->glGenBuffers(1, &m_vbo);
-    check_gl_error();
+    ogl->glGenBuffers(1, &m_posVbo);
+    ogl->glGenBuffers(1, &m_colVbo);
     // bind the Vertex Array Object first, then bind and set vertex buffer(s), and then configure vertex attributes(s).
     ogl->glBindVertexArray(m_vao);
-    check_gl_error();
 
-    ogl->glBindBuffer(GL_ARRAY_BUFFER, m_vbo);
+    ogl->glBindBuffer(GL_ARRAY_BUFFER, m_posVbo);
     ogl->glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
 
     ogl->glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
     ogl->glEnableVertexAttribArray(0);
-    check_gl_error();
+
+    ogl->glBindBuffer(GL_ARRAY_BUFFER, m_colVbo);
+    ogl->glBufferData(GL_ARRAY_BUFFER, sizeof(colors), colors, GL_STATIC_DRAW);
+
+    ogl->glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
+    ogl->glEnableVertexAttribArray(1);
 
     // note that this is allowed, the call to glVertexAttribPointer registered VBO as the vertex attribute's bound vertex buffer object so afterwards we can safely unbind
     ogl->glBindBuffer(GL_ARRAY_BUFFER, 0);

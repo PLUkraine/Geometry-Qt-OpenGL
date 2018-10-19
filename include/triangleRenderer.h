@@ -28,7 +28,8 @@ private:
 
     // TODO put in the model
     GLuint m_vao;
-    GLuint m_vbo;
+    GLuint m_posVbo;
+    GLuint m_colVbo;
 
 public:
     TriangleRenderer();
