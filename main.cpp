@@ -4,16 +4,14 @@
 #include <QSurfaceFormat>
 #include <QOpenGLContext>
 
-#include "oglItem.h"
+#include "OpenGlPlugin/oglItem.h"
 
 void setSurfaceFormat() {
     QSurfaceFormat fmt;
     fmt.setDepthBufferSize(24);
 
-
     fmt.setVersion(3, 3);
     fmt.setProfile(QSurfaceFormat::CoreProfile);
-    fmt.setOption(QSurfaceFormat::DebugContext);
     fmt.setSwapBehavior(QSurfaceFormat::DoubleBuffer);
 
     QSurfaceFormat::setDefaultFormat(fmt);
