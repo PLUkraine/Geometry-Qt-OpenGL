@@ -21,6 +21,26 @@ private slots:
         c = {0.0f,  1.0f};
         QVERIFY2(Point::getOrientation(a, b, c) == Orientation::COLLINEAR, "Collinear");
     }
+
+    void testPointTriangle() {
+        glm::vec2 a(0.0f, 10.0f);
+        glm::vec2 b(0.0f,  0.0f);
+        glm::vec2 c(10.0f,  0.0f);
+
+        // inside
+        QVERIFY(Point::pointTriangleTest(a, b, c, {1.0f, 1.0f}));
+        QVERIFY(Point::pointTriangleTest(a, b, c, {5.0f, 3.1415f}));
+        // on border
+        QVERIFY(Point::pointTriangleTest(a, b, c, {5.0f, 5.0f}));
+        QVERIFY(Point::pointTriangleTest(a, b, c, {0.0f, 5.0f}));
+        QVERIFY(Point::pointTriangleTest(a, b, c, {5.5f, 0.0f}));
+        // outside
+        QVERIFY(!Point::pointTriangleTest(a, b, c, {5.0f, 7.0f}));
+        QVERIFY(!Point::pointTriangleTest(a, b, c, {-1.0f, 0.0f}));
+        QVERIFY(!Point::pointTriangleTest(a, b, c, {0.0f, -1.0f}));
+        QVERIFY(!Point::pointTriangleTest(a, b, c, {10.5f, 10.0f}));
+        QVERIFY(!Point::pointTriangleTest(a, b, c, {10.0f, 10.5f}));
+    }
 };
 
 int main(int argc, char *argv[])
