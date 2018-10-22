@@ -6,6 +6,10 @@
 #include <QOpenGLExtraFunctions>
 #include <QDebug>
 
+#include <glm/glm.hpp>
+#include <glm/gtc/matrix_transform.hpp>
+#include <glm/gtc/type_ptr.hpp>
+
 
 void _check_gl_error(const char *file, int line) {
     QOpenGLFunctions *f = QOpenGLContext::currentContext()->functions();
@@ -38,7 +42,7 @@ TriangleRenderer::TriangleRenderer()
 TriangleRenderer::~TriangleRenderer()
 {
     /*
-     * This makes apap crash!!!
+     * This makes app crash!!!
      * Do NOT getFunctions inside of the destructor.
      * It crashed the app
      */
@@ -52,6 +56,7 @@ TriangleRenderer::~TriangleRenderer()
 void TriangleRenderer::setViewportSize(const QSize &size)
 {
     m_viewportSize = size;
+
 }
 
 void TriangleRenderer::setWindow(QQuickWindow *window)
@@ -69,9 +74,13 @@ void TriangleRenderer::paint()
     ogl->glClear(GL_COLOR_BUFFER_BIT);
 
     m_program->bind();
+    glm::mat4 proj = glm::ortho(-2.f, 2.f, -2.f, 2.f, -1.f, 1.f);
+    m_program->setUniformValue("projection",
+                               QMatrix4x4(glm::value_ptr(proj)).transposed());
     ogl->glBindVertexArray(m_vao);
 
-    ogl->glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+    unsigned long offset = 0 * sizeof(GLuint);
+    ogl->glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, reinterpret_cast<GLvoid *>(offset));
 
     ogl->glBindVertexArray(0);
     m_program->release();
